@@ -32,9 +32,9 @@ jobs:
     - name: Run Gunicorn Server
       run: |
         python manage.py collectstatic --noinput
-        gunicorn your_project_name.wsgi:application --bind 0.0.0.0:8000
+        gunicorn maps-service.wsgi:application --bind 0.0.0.0:8000
       env:
-        DJANGO_SETTINGS_MODULE: maps-service.settings
+        DJANGO_SETTINGS_MODULE: root.settings
 
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
