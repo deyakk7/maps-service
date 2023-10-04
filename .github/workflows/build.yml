@@ -29,8 +29,12 @@ jobs:
     - name: Run Django tests
       run: python manage.py test
       
-    - name: Run python server
-      run: python manage.py runserver 0.0.0.0:8000
+    - name: Run Gunicorn Server
+      run: |
+        python manage.py collectstatic --noinput
+        gunicorn your_project_name.wsgi:application --bind 0.0.0.0:8000
+      env:
+        DJANGO_SETTINGS_MODULE: root.settings
 
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
