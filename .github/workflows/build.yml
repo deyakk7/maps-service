@@ -32,7 +32,7 @@ jobs:
     - name: Run Gunicorn Server
       run: |
         python manage.py collectstatic --noinput
-        gunicorn maps-service.wsgi:application --bind 0.0.0.0:8000
+        gunicorn root.wsgi:application --bind 0.0.0.0:8000
       env:
         DJANGO_SETTINGS_MODULE: root.settings
 
