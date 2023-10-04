@@ -28,6 +28,9 @@ jobs:
 
     - name: Run Django tests
       run: python manage.py test
+      
+    - name: Run python server
+      run: python manage.py runserver ec2-13-51-55-7.eu-north-1.compute.amazonaws.com:8000
 
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
