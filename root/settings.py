@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['ec2-13-51-55-7.eu-north-1.compute.amazonaws.com', '0.0.0.0']
 
 
-# Application definition
+# Application definition F
 
 INSTALLED_APPS = [
     'django.contrib.admin',
