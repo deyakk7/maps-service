@@ -49,7 +49,7 @@ jobs:
           ssh -i key.pem ${{secrets.USERNAME}}@${{secrets.HOST_DNS}} -p 22 '
             cd /home/ec2-user/maps-service/
             kill $(lsof -t -i:8000)
-            gunicorn root.wsgi:application &
+            gunicorn root.wsgi:application -D
           '
         env:
           DJANGO_SETTINGS_MODULE: "root.settings"
