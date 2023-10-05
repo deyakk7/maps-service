@@ -42,13 +42,16 @@ jobs:
         REMOTE_USER: ${{ secrets.USERNAME }}
         TARGET: ${{ secrets.REMOTE_TARGET }}
 
-    - name: PM2 restart
+    - name: Run Gunicorn via SSH
       run: |
         touch key.pem
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
         chmod 400 key.pem
         ssh -i key.pem ${{secrets.USERNAME}}@${{secrets.HOST_DNS}} -p 22 '
-        cd /home/ec2-user/maps-service/
-        python3 manage.py runserver
+          cd /home/ec2-user/maps-service/
+          gunicorn root.wsgi:application
         '
+      env:
+        DJANGO_SETTINGS_MODULE: "root.settings"
+        
     
