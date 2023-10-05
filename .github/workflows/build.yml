@@ -32,15 +32,6 @@ jobs:
     - name: Run Django tests
       run: python manage.py test
       
-    - name: PM2 restart
-      run: |
-        touch key.pem
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
-        chmod 400 key.pem
-        ssh -i key.pem ${{secrets.USERNAME}}@${{secrets.HOST_DNS}} -p 22 '
-        cd /home/ec2-user/maps-service/
-        python manage.py runserver
-        '
 
     - name: Deploy to Server
       uses: easingthemes/ssh-deploy@main
@@ -51,4 +42,13 @@ jobs:
         REMOTE_USER: ${{ secrets.USERNAME }}
         TARGET: ${{ secrets.REMOTE_TARGET }}
 
+    - name: PM2 restart
+      run: |
+        touch key.pem
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+        chmod 400 key.pem
+        ssh -i key.pem ${{secrets.USERNAME}}@${{secrets.HOST_DNS}} -p 22 '
+        cd /home/ec2-user/maps-service/
+        python manage.py runserver
+        '
     
