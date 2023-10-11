@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-($o4i&*4!a(l72g93gc0@9a=3%m_acqnq%4$#-ej_)mkw=ai#q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ec2-13-51-55-7.eu-north-1.compute.amazonaws.com', '0.0.0.0']
+ALLOWED_HOSTS = ['ec2-13-51-55-7.eu-north-1.compute.amazonaws.com', '0.0.0.0', '127.0.0.1']
 
 
 # Application definition F
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'drf_spectacular',
     'api',
 ]
 
@@ -52,6 +54,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'root.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
 TEMPLATES = [
     {
