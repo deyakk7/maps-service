@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+# changed
 urlpatterns = [
     path('hello/', lambda request: HttpResponse('Hello Wdfdsfsdforld!')),
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
