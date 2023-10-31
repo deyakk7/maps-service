@@ -13,9 +13,9 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
 
-    path(r'auth/', include('djoser.urls')),
-    re_path('auth/', include('djoser.urls.authtoken')),
-] +router.urls 
+    # path(r'auth/', include('djoser.urls')),
+    # re_path('auth/', include('djoser.urls.authtoken')),
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
