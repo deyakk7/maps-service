@@ -63,6 +63,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Додайте ваші довірені джерела тут
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = 'root.urls'
 
 REST_FRAMEWORK = {
