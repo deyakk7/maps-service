@@ -6,10 +6,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 
-from .views import UserViewSet
+from .views import UserViewSet, ProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'profiles', ProfileViewSet)
 
 urlpatterns = [
 
