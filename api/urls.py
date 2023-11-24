@@ -1,22 +1,14 @@
-
-from django.http import HttpResponse
 from django.urls import path, include, re_path
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework import routers
+from django.contrib import admin
 
-from .views import UserViewSet, ProfileViewSet
-
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'profiles', ProfileViewSet)
 
 urlpatterns = [
-
-    # path(r'auth/', include('djoser.urls')),
-    # re_path('auth/', include('djoser.urls.authtoken')),
-] + router.urls
+    path('admin/', admin.site.urls),
+    path('events/', include('events.urls')),
+    path('auth/', include('auth_service.urls')),
+] 
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
