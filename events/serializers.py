@@ -5,7 +5,8 @@ from .models import Event, Review
 
 class EventsSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-
+    reviews = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    
     class Meta:
         model = Event
         fields = '__all__'

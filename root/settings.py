@@ -14,23 +14,18 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-($o4i&*4!a(l72g93gc0@9a=3%m_acqnq%4$#-ej_)mkw=ai#q'
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ALLOWED_HOSTS = [config('IP-ADDRESS', default='127.0.0.1')]
 
-ALLOWED_HOSTS = ['ec2-13-51-55-7.eu-north-1.compute.amazonaws.com', '0.0.0.0', '127.0.0.1']
-
-
-# Application definition F
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -61,7 +56,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Додайте ваші довірені джерела тут
+    "http://localhost:3000", 
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -70,14 +65,14 @@ ROOT_URLCONF = 'root.urls'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    # 'DEFAULT_RENDERER_CLASSES': [
-    #     'rest_framework.renderers.JSONRenderer',
-    # ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }
 
 TEMPLATES = [
@@ -163,8 +158,8 @@ AUTH_USER_MODEL = 'auth_service.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'deyakk.for.joke.send@gmail.com'
-EMAIL_HOST_PASSWORD = 'gddd mnty qieg mxme'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
