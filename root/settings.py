@@ -22,7 +22,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = [config('IP-ADDRESS', default='127.0.0.1')]
+ALLOWED_HOSTS = [config('IP_ADDRESS', default='127.0.0.1')]
 
 
 INSTALLED_APPS = [
