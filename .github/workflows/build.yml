@@ -12,6 +12,9 @@ jobs:
       DEBUG: "False"
       EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
       EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+      SOCIAL_AUTH_GOOGLE_OAUTH2_KEY: ${{ secrets.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY }}
+      SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET: ${{ secrets.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET }}
+      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
 
     runs-on: ubuntu-latest
 
@@ -35,7 +38,7 @@ jobs:
       - name: Run Django migrations
         run: python manage.py makemigrations
 
-      - name: Run Django migrations1
+      - name: Run Django migrate
         run: python manage.py migrate
 
       - name: Run Django tests
