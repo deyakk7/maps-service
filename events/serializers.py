@@ -5,13 +5,12 @@ from .models import Event, Review
 
 class EventsSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
-    reviews = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    
+
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'start_date', 'end_date', 'image', 'created_at', 'updated_at', 'is_active', 'position_x', 'position_y', 'user', 'rating', 'reviews']
         depth = 1
-        read_only_fields = ['id', 'user', 'rating', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'user', 'rating', 'created_at', 'updated_at', 'reviews']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
