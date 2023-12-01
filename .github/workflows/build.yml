@@ -64,6 +64,9 @@ jobs:
             cd /home/ec2-user/maps-service/
             kill $(lsof -t -i:8000)
             pip install -r /home/ec2-user/maps-service/requirements.txt
+            python3 /home/ec2-user/maps-service/manage.py collectstatic --noinput
+            python3 /home/ec2-user/maps-service/manage.py makemigrations
+            python3 /home/ec2-user/maps-service/manage.py migrate
             gunicorn root.wsgi:application -D
           '
         env:
