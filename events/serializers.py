@@ -8,7 +8,7 @@ class EventsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
-        fields = ['id', 'title', 'description', 'start_date', 'end_date', 'image', 'created_at', 'updated_at', 'is_active', 'position_x', 'position_y', 'user', 'rating', 'reviews']
+        fields = ['id', 'title', 'description', 'start_date', 'end_date', 'image', 'created_at', 'updated_at', 'position_x', 'position_y', 'user', 'rating', 'reviews']
         depth = 1
         read_only_fields = ['id', 'user', 'rating', 'created_at', 'updated_at', 'reviews']
 

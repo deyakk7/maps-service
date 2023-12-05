@@ -10,10 +10,9 @@ class Event(models.Model):
     description = models.TextField(null=True, blank=True)
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
-    image = models.ImageField(upload_to='events', blank=True, null=True)
+    image = models.ImageField(upload_to='events', blank=True, null=True, default='events/default-event.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
     position_x = models.FloatField(null=True, blank=True)
     position_y = models.FloatField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
@@ -35,7 +34,6 @@ class Review(models.Model):
     comment = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
 
 
     class Meta:
