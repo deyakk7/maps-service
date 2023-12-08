@@ -1,8 +1,8 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
 
+from api.permissions import IsOwnerOrReadOnly
 from .models import Profile
 from .serializers import ProfileSerializer
-from api.permissions import IsOwnerOrReadOnly
 
 
 class ProfileList(generics.ListAPIView):

@@ -15,9 +15,11 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     position_x = models.FloatField(null=True, blank=True)
     position_y = models.FloatField(null=True, blank=True)
+    is_expired = models.BooleanField(default=False)
+    total_reviews = models.PositiveIntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
     rating = models.FloatField(default=0)
-    
+
     class Meta:
         verbose_name = 'Event'
         verbose_name_plural = 'Events'
@@ -35,20 +37,18 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     class Meta:
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
         ordering = ['-created_at']
         unique_together = ['event', 'user']
-    
-    
+
     def __str__(self):
         return f'{self.event.title} - {self.user.email}'
-    
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        
+
+        self.event.total_reviews = self.event.reviews.count()
         self.event.rating = self.event.reviews.all().aggregate(models.Avg('rating'))['rating__avg']
         self.event.save()
