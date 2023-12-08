@@ -4,21 +4,22 @@ from django.utils import timezone
 from rest_framework import generics
 from rest_framework import permissions
 
+from api.permissions import IsOwnerOrReadOnly
 from .models import Event, Review
 from .serializers import EventsSerializer, ReviewSerializer
-from api.permissions import IsOwnerOrReadOnly
 
 
 class EventsListView(generics.ListCreateAPIView):
     serializer_class = EventsSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        Event.objects.filter(end_date__lt=datetime.now(timezone.utc)).delete()
-        return Event.objects.all()
+        expired_events = Event.objects.filter(end_date__lt=datetime.now(timezone.utc))
+        expired_events.update(is_expired=True)
+        return Event.objects.filter(is_expired=False)
 
 
 class EventsDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -30,7 +31,7 @@ class EventsDetailView(generics.RetrieveUpdateDestroyAPIView):
 class ReviewListView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
