@@ -1,6 +1,9 @@
-from django.db import models
+from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -16,9 +19,9 @@ class Event(models.Model):
     position_x = models.FloatField(null=True, blank=True)
     position_y = models.FloatField(null=True, blank=True)
     is_expired = models.BooleanField(default=False)
-    total_reviews = models.PositiveIntegerField(default=0)
+    total_reviews = models.PositiveIntegerField(default=0, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
-    rating = models.FloatField(default=0)
+    rating = models.FloatField(default=0, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Event'
@@ -27,6 +30,10 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.is_expired = self.end_date < datetime.now(timezone.utc)
+        super(Event, self).save(*args, **kwargs)
 
 
 class Review(models.Model):
