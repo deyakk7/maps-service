@@ -1,5 +1,6 @@
 .env
 venv
+htmlcov/
 
 __pycache__/
 *.py[cod]
@@ -7,3 +8,4 @@ db.sqlite3
 media/
 staticfiles/
 .idea/
+.coverage
