@@ -32,7 +32,9 @@ class Event(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.is_expired = self.end_date < datetime.now(timezone.utc)
+        if self.end_date:
+            self.is_expired = self.end_date < datetime.now(timezone.utc)
+
         super(Event, self).save(*args, **kwargs)
 
 
