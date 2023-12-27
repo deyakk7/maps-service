@@ -28,7 +28,15 @@ class EventsDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwnerOrReadOnly,)
 
 
-class ReviewListView(generics.ListCreateAPIView):
+class EventsForCurrentUserList(generics.ListAPIView):
+    serializer_class = EventsSerializer
+    permissions = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return Event.objects.filter(user=self.request.user)
+
+
+class ReviewsListView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -37,7 +45,7 @@ class ReviewListView(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class ReviewDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ReviewsDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = (IsOwnerOrReadOnly,)
