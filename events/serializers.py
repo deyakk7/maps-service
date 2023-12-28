@@ -9,7 +9,7 @@ class EventsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['id', 'title', 'description', 'start_date', 'end_date', 'image', 'created_at', 'updated_at',
-                  'position_x', 'position_y', 'is_expired', 'total_reviews', 'user', 'rating', 'reviews']
+                  'position_x', 'position_y', 'is_expired', 'total_reviews', 'user', 'rating']
         depth = 1
         read_only_fields = ['id', 'user', 'rating', 'created_at', 'updated_at', 'reviews', 'total_reviews']
 
@@ -19,5 +19,5 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = '__all__'
-        read_only_fields = ['id', 'user', 'created_at', 'updated_at']
+        exclude = ['event']
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at', 'event']
