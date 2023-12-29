@@ -4,7 +4,7 @@ from .models import Event, Review
 
 
 class EventsSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
+    user = serializers.ReadOnlyField(source='user.id')
 
     class Meta:
         model = Event
@@ -15,7 +15,7 @@ class EventsSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
+    user = serializers.ReadOnlyField(source='user.id')
 
     class Meta:
         model = Review
