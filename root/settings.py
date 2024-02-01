@@ -80,6 +80,7 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'PAGE_SIZE': 5,
 }
+# TODO FIX DEFAULT PAGINATION CLASS
 
 TEMPLATES = [
     {
