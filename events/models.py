@@ -35,7 +35,7 @@ class Event(models.Model):
         if self.end_date:
             self.is_expired = self.end_date < datetime.now(timezone.utc)
 
-        super(Event, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 class Review(models.Model):
@@ -57,6 +57,13 @@ class Review(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
+        self.event.total_reviews = self.event.reviews.count()
+        self.event.rating = self.event.reviews.all().aggregate(models.Avg('rating'))['rating__avg']
+        self.event.save()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
 
         self.event.total_reviews = self.event.reviews.count()
         self.event.rating = self.event.reviews.all().aggregate(models.Avg('rating'))['rating__avg']
