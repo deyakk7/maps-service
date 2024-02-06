@@ -11,10 +11,15 @@ class BaseAuthTestCase(APITestCase):
         self.token = self.get_token()
         self.auth_header = {'Authorization': f'Bearer {self.token}'}
 
-    def get_token(self) -> str:
+    def get_token(self, user_email=None, user_password=None) -> str:
+        if user_email is None:
+            user_email = self.user.email
+        if user_password is None:
+            user_password = self.password
+
         auth_uri = reverse("jwt-create")
         response = self.client.post(
-            auth_uri, {"email": self.user.email, "password": self.password}
+            auth_uri, {"email": user_email, "password": user_password}
         )
         return response.data['access']
 
@@ -36,4 +41,3 @@ class APITests(BaseAuthTestCase):
             user_uri,
         )
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
