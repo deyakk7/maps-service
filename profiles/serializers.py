@@ -1,14 +1,15 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
-from auth_service.serializers import UserSerializer
 from .models import Profile
 
 
 class ProfileSerializer(ModelSerializer):
-    user = UserSerializer()
+    user_name = SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = '__all__'
-        depth = 1
-        read_only_fields = ('id', 'user', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'user', 'created_at', 'updated_at', 'user_name')
+
+    def get_user_name(self, obj: Profile):
+        return obj.user.username
