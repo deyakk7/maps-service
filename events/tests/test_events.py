@@ -67,14 +67,12 @@ class EventsTests(BaseAuthTestCase):
         self.assertEquals(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_change_event_another_user_fail(self):
-        new_user, user_password = UserMocker.generate_random_user()
-        new_user_token = self.get_token(new_user.email, user_password)
-        new_auth_headers = {'Authorization': f'Bearer {new_user_token}'}
+        new_user, new_headers = self.create_user()
 
         response = self.client.put(
             self.event_uri_id,
             EventsAndReviewsMocker.generate_random_event(),
-            headers=new_auth_headers
+            headers=new_headers
         )
 
         self.assertEquals(response.status_code, status.HTTP_403_FORBIDDEN)

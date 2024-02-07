@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
 
-from auth_service.tests.mocker import UserMocker
 from .mocker import EventsAndReviewsMocker
 from .test_events import EventsTests
 from ..models import Review
@@ -54,7 +53,7 @@ class ReviewTests(EventsTests):
         result_rating = 0
         tests_count = 5
         for _ in range(tests_count):
-            user, password = UserMocker.generate_random_user()
+            user, auth_headers = self.create_user()
             review = self.create_review(user_id=user.id)
             result_rating += review.rating
 
@@ -69,7 +68,7 @@ class ReviewTests(EventsTests):
         review: Review | None = None
 
         for _ in range(tests_count):
-            user, password = UserMocker.generate_random_user()
+            user, auth_headers = self.create_user()
             review = self.create_review(user_id=user.id)
             sum_of_rating += review.rating
 
@@ -98,9 +97,7 @@ class ReviewTests(EventsTests):
         review = self.create_review()
         review_uri_id = reverse('reviews-detail', kwargs={'pk': review.id})
 
-        new_user, user_password = UserMocker.generate_random_user()
-        new_user_token = self.get_token(new_user.email, user_password)
-        new_auth_headers = {'Authorization': f'Bearer {new_user_token}'}
+        new_user, new_auth_headers = self.create_user()
 
         response = self.client.put(
             review_uri_id,
