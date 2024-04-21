@@ -1,11 +1,13 @@
 from datetime import datetime
 
+from django.http import JsonResponse
 from django.utils import timezone
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions
-from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 
 from api.permissions import IsOwnerOrReadOnly
+from .filters import EventMyFilter
 from .models import Event, Review
 from .serializers import EventsSerializer, ReviewSerializer
 
@@ -13,6 +15,7 @@ from .serializers import EventsSerializer, ReviewSerializer
 class EventsListView(generics.ListCreateAPIView):
     serializer_class = EventsSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -25,12 +28,6 @@ class EventsListView(generics.ListCreateAPIView):
         expired_events.update(is_expired=True)
         return Event.objects.filter(is_expired=False)
 
-    @action(detail=False, methods=['get'])
-    def my_events(self, request, *args, **kwargs):
-        queryset = Event.objects.filter(user=request.user)
-        serializer = self.get_serializer(queryset, many=True)
-        return self.get_paginated_response(serializer.data)
-
 
 class EventsDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
@@ -41,9 +38,13 @@ class EventsDetailView(generics.RetrieveUpdateDestroyAPIView):
 class EventsForCurrentUserList(generics.ListAPIView):
     serializer_class = EventsSerializer
     permissions = (permissions.IsAuthenticated,)
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = EventMyFilter
 
     def get_queryset(self):
-        return Event.objects.filter(user=self.request.user)
+        queryset = Event.objects.filter(user=self.request.user)
+        filtered_queryset = EventMyFilter(self.request.GET, queryset=queryset).qs
+        return filtered_queryset
 
 
 class ReviewsListView(generics.ListCreateAPIView):
