@@ -13,6 +13,7 @@ from .serializers import EventsSerializer, ReviewSerializer
 class EventsListView(generics.ListCreateAPIView):
     serializer_class = EventsSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -24,12 +25,6 @@ class EventsListView(generics.ListCreateAPIView):
         expired_events = Event.objects.filter(end_date__lt=datetime.now(timezone.utc))
         expired_events.update(is_expired=True)
         return Event.objects.filter(is_expired=False)
-
-    @action(detail=False, methods=['get'])
-    def my_events(self, request, *args, **kwargs):
-        queryset = Event.objects.filter(user=request.user)
-        serializer = self.get_serializer(queryset, many=True)
-        return self.get_paginated_response(serializer.data)
 
 
 class EventsDetailView(generics.RetrieveUpdateDestroyAPIView):
