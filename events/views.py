@@ -43,7 +43,7 @@ class EventsForCurrentUserList(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Event.objects.filter(user=self.request.user)
-        filtered_queryset = EventMyFilter(self.request.GET, queryset=queryset).qs
+        filtered_queryset = EventMyFilter(self.request.GET, queryset=queryset).qs.order_by('-created_at')
         return filtered_queryset
 
 
